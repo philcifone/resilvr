@@ -13,7 +13,7 @@ const Toolbar = () => {
         
         <div className="flex items-center gap-4">
           <a
-            href="https://github.com/philcifone"
+            href="https://github.com/philcifone/resilvr"
             target="_blank"
             rel="noopener noreferrer"
             className="p-2 mr-12 rounded-lg hover:bg-gray-100 dark:hover:bg-neutral-700 transition-colors text-blue-600 dark:text-blue-400 underline"

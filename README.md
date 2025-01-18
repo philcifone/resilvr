@@ -1,71 +1,52 @@
-# Getting Started with Create React App
+# ZFS Storage Pool Designer
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A web-based tool to help visualize and plan ZFS storage pool configurations. This interactive calculator helps users design ZFS pools by providing real-time visualization and capacity calculations.
 
-## Available Scripts
+## Features
 
-In the project directory, you can run:
+- Interactive pool configuration with support for multiple VDEVs
+- Support for various RAID configurations (mirror, RAIDZ1/2/3, dRAID1/2/3)
+- Hot spare management
+- Advanced options (SLOG, L2ARC, ashift)
+- Real-time visualization of pool layout
+- Dark/light theme support
+- Capacity and efficiency calculations
+- ZFS command generation
 
-### `npm start`
+## Technology Stack
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+- React
+- Tailwind CSS
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## Important Disclaimer
 
-### `npm test`
+This tool is a learning project and should be used for educational and planning purposes only. It comes with several important caveats:
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+- This is not an official ZFS tool and may contain errors or inaccuracies
+- All calculations are approximations and may not reflect real-world performance
+- The tool may not account for all ZFS features, limitations, or best practices
+- Always consult the official OpenZFS documentation and experienced administrators before implementing production storage systems
+- The generated commands are templates and should be carefully reviewed and modified for your specific hardware configuration
+- No warranty is provided, and the author(s) are not responsible for any data loss or system issues
 
-### `npm run build`
+## Official Resources
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+For authoritative information about ZFS, please consult:
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+- [OpenZFS Documentation](https://openzfs.github.io/openzfs-docs/)
+- [OpenZFS GitHub Repository](https://github.com/openzfs/zfs)
+- [FreeBSD ZFS Documentation](https://docs.freebsd.org/en/books/handbook/zfs/)
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## Development
 
-### `npm run eject`
+This project is a work in progress and contributions are welcome. Please note that this is a learning project, and the code may not follow all best practices.
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+### Setup
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+1. Clone the repository
+2. Install dependencies with `npm install`
+3. Start the development server with `npm start`
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+### Contributing
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
-# resilvr
+Feel free to open issues or submit pull requests. However, please note that this is a learning project and may not be actively maintained.

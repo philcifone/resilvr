@@ -7,6 +7,7 @@ import Advanced from './components/PoolConfig/Advanced';
 import Visualization from './components/Visualization';
 import Results from './components/Results';
 import Warnings from './components/Results/Warnings';
+import DisclaimerBanner from './components/DisclaimerBanner';
 
 const ZFSCalculator = () => {
   const {
@@ -43,6 +44,8 @@ const ZFSCalculator = () => {
                 Design and calculate ZFS storage pools with advanced features
               </p>
             </div>
+
+            <DisclaimerBanner />
 
             <div className="space-y-6">
               <div>
