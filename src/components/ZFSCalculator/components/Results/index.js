@@ -22,8 +22,7 @@ const Results = ({ pool, results }) => {
       pool.l2arc.length > 0
         ? ' \\\n  cache ' + '/dev/sdX'
         : ''
-    }
-    -o ashift=${pool.ashift}`;
+    } -o ashift=${pool.ashift}`;
   }, [pool]);
 
   const handleCopy = async () => {
