@@ -124,7 +124,7 @@ const Visualization = ({ pool }) => {
       </div>
       
       <div className="mt-4 p-3 bg-white dark:bg-neutral-800 rounded-lg text-sm text-gray-600 dark:text-gray-400 transition-colors">
-        <strong className="text-gray-900 dark:text-gray-300">Important:</strong> Data is striped across VDEVs, with each VDEV maintaining its own redundancy. If any single VDEV fails completely, the entire pool will be lost. For example, with a mirror VDEV and a RAIDZ3 VDEV, you would need to lose all drives in the mirror VDEV OR 4 drives in the RAIDZ3 VDEV to lose that VDEV, which would result in total pool failure.
+        <strong className="text-gray-900 dark:text-gray-300">Important: </strong>  Data is striped across VDEVs. If any single VDEV fails completely, the entire pool will be lost.
       </div>
     </div>
   );
