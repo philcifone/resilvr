@@ -17,7 +17,8 @@ const PoolConfig = ({
   onToggleSlog,
   onUpdateSlog,
   onToggleL2arc,
-  onUpdateL2arc
+  onUpdateL2arc,
+  onToggleSlogMirror  // Add this prop
 }) => {
   return (
     <div className="space-y-6">
@@ -44,11 +45,13 @@ const PoolConfig = ({
         ashift={pool.ashift}
         slog={pool.slog}
         l2arc={pool.l2arc}
+        slogMirrored={pool.slogMirrored}  // Add this prop
         onUpdateAshift={onUpdateAshift}
         onToggleSlog={onToggleSlog}
         onUpdateSlog={onUpdateSlog}
         onToggleL2arc={onToggleL2arc}
         onUpdateL2arc={onUpdateL2arc}
+        onToggleSlogMirror={onToggleSlogMirror}  // Add this prop
       />
     </div>
   );

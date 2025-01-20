@@ -6,11 +6,13 @@ const Advanced = ({
   ashift,
   slog,
   l2arc,
+  slogMirrored,
   onUpdateAshift,
   onToggleSlog,
   onUpdateSlog,
   onToggleL2arc,
-  onUpdateL2arc
+  onUpdateL2arc,
+  onToggleSlogMirror
 }) => {
   return (
     <div>
@@ -50,36 +52,49 @@ const Advanced = ({
               </div>
             </div>
           </div>
-          <div className="flex gap-2">
-            <select
-              value={slog.length > 0 ? 'enabled' : 'disabled'}
-              onChange={(e) => onToggleSlog(e.target.value === 'enabled')}
-              className="flex-1 p-2 bg-white dark:bg-neutral-700 border border-gray-300 dark:border-neutral-600 
-                       rounded text-gray-900 dark:text-gray-200 transition-colors"
-            >
-              <option value="disabled">Disabled</option>
-              <option value="enabled">Enabled</option>
-            </select>
+          <div className="flex flex-col gap-2">
+            <div className="flex gap-2">
+              <select
+                value={slog.length > 0 ? 'enabled' : 'disabled'}
+                onChange={(e) => onToggleSlog(e.target.value === 'enabled')}
+                className="flex-1 p-2 bg-white dark:bg-neutral-700 border border-gray-300 dark:border-neutral-600 
+                         rounded text-gray-900 dark:text-gray-200 transition-colors"
+              >
+                <option value="disabled">Disabled</option>
+                <option value="enabled">Enabled</option>
+              </select>
+              {slog.length > 0 && (
+                <>
+                  <input
+                    type="number"
+                    value={slog[0].size}
+                    onChange={(e) => onUpdateSlog({ size: Number(e.target.value) })}
+                    className="w-20 p-2 bg-white dark:bg-neutral-700 border border-gray-300 dark:border-neutral-600 
+                             rounded text-gray-900 dark:text-gray-200 transition-colors"
+                    min="1"
+                  />
+                  <select
+                    value={slog[0].unit}
+                    onChange={(e) => onUpdateSlog({ unit: e.target.value })}
+                    className="w-20 p-2 bg-white dark:bg-neutral-700 border border-gray-300 dark:border-neutral-600 
+                             rounded text-gray-900 dark:text-gray-200 transition-colors"
+                  >
+                    <option value="GB">GB</option>
+                    <option value="TB">TB</option>
+                  </select>
+                </>
+              )}
+            </div>
             {slog.length > 0 && (
-              <>
+              <label className="flex items-center gap-2 text-sm text-gray-700 dark:text-gray-300">
                 <input
-                  type="number"
-                  value={slog[0].size}
-                  onChange={(e) => onUpdateSlog({ size: Number(e.target.value) })}
-                  className="w-20 p-2 bg-white dark:bg-neutral-700 border border-gray-300 dark:border-neutral-600 
-                           rounded text-gray-900 dark:text-gray-200 transition-colors"
-                  min="1"
+                  type="checkbox"
+                  checked={slogMirrored}
+                  onChange={(e) => onToggleSlogMirror(e.target.checked)}
+                  className="rounded border-gray-300 dark:border-neutral-600"
                 />
-                <select
-                  value={slog[0].unit}
-                  onChange={(e) => onUpdateSlog({ unit: e.target.value })}
-                  className="w-20 p-2 bg-white dark:bg-neutral-700 border border-gray-300 dark:border-neutral-600 
-                           rounded text-gray-900 dark:text-gray-200 transition-colors"
-                >
-                  <option value="GB">GB</option>
-                  <option value="TB">TB</option>
-                </select>
-              </>
+                Mirror SLOG devices
+              </label>
             )}
           </div>
         </div>

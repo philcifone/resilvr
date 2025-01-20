@@ -26,7 +26,8 @@ const ZFSCalculator = () => {
     toggleSlog,
     updateSlog,
     toggleL2arc,
-    updateL2arc
+    updateL2arc,
+    toggleSlogMirror
   } = useZFSPool();
 
   return (
@@ -83,11 +84,13 @@ const ZFSCalculator = () => {
                 ashift={pool.ashift}
                 slog={pool.slog}
                 l2arc={pool.l2arc}
+                slogMirrored={pool.slogMirrored} 
                 onUpdateAshift={updateAshift}
                 onToggleSlog={toggleSlog}
                 onUpdateSlog={updateSlog}
                 onToggleL2arc={toggleL2arc}
                 onUpdateL2arc={updateL2arc}
+                onToggleSlogMirror={toggleSlogMirror}
               />
 
               <Warnings pool={pool} />

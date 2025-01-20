@@ -94,7 +94,8 @@ export function useZFSPool() {
   const toggleSlog = useCallback((enabled) => {
     setPool(prev => ({
       ...prev,
-      slog: enabled ? [{size: 16, unit: 'GB'}] : []
+      slog: enabled ? [{size: 16, unit: 'GB'}] : [],
+      slogMirrored: false // Reset mirror state when toggling SLOG
     }));
   }, []);
 
@@ -102,6 +103,13 @@ export function useZFSPool() {
     setPool(prev => ({
       ...prev,
       slog: [{ ...prev.slog[0], ...updates }]
+    }));
+  }, []);
+
+  const toggleSlogMirror = useCallback((mirrored) => {
+    setPool(prev => ({
+      ...prev,
+      slogMirrored: mirrored
     }));
   }, []);
 
@@ -139,6 +147,7 @@ export function useZFSPool() {
     toggleSlog,
     updateSlog,
     toggleL2arc,
-    updateL2arc
+    updateL2arc,
+    toggleSlogMirror  // Added this to the return object
   };
 }

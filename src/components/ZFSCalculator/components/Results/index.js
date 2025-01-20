@@ -7,23 +7,23 @@ const Results = ({ pool, results }) => {
 
   const getZfsCommands = useCallback(() => {
     return `zpool create \\
-  ${pool.name} \\
-  ${pool.vdevs.map(vdev => 
-    vdev.type + ' ' + vdev.drives.map(() => '/dev/sdX').join(' ')
-  ).join(' \\\n  ')}${
-    pool.spares.length > 0 
-      ? ' \\\n  spare ' + pool.spares.map(() => '/dev/sdX').join(' ') 
-      : ''
-  }${
-    pool.slog.length > 0
-      ? ' \\\n  log ' + '/dev/sdX'
-      : ''
-  }${
-    pool.l2arc.length > 0
-      ? ' \\\n  cache ' + '/dev/sdX'
-      : ''
-  }
-  -o ashift=${pool.ashift}`;
+    ${pool.name} \\
+    ${pool.vdevs.map(vdev => 
+      vdev.type + ' ' + vdev.drives.map(() => '/dev/sdX').join(' ')
+    ).join(' \\\n  ')}${
+      pool.spares.length > 0 
+        ? ' \\\n  spare ' + pool.spares.map(() => '/dev/sdX').join(' ') 
+        : ''
+    }${
+      pool.slog.length > 0
+        ? ' \\\n  log ' + (pool.slogMirrored ? 'mirror ' : '') + Array(pool.slogMirrored ? 2 : 1).fill('/dev/sdX').join(' ')
+        : ''
+    }${
+      pool.l2arc.length > 0
+        ? ' \\\n  cache ' + '/dev/sdX'
+        : ''
+    }
+    -o ashift=${pool.ashift}`;
   }, [pool]);
 
   const handleCopy = async () => {

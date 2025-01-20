@@ -25,6 +25,7 @@ export const DRIVE_SIZES = [
     }],
     spares: [],
     slog: [],
+    slogMirrored: false,
     l2arc: [],
     ashift: 12
   };
