@@ -101,6 +101,7 @@ const ZFSCalculator = () => {
 
           <div className="mt-4 text-center text-sm text-gray-600 dark:text-gray-400">
             Built by Phil and Claude with React and Tailwind CSS • Data calculated in real-time
+            • Contributions welcome!
           </div>
         </div>
       </div>
