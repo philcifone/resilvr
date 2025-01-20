@@ -1,3 +1,7 @@
+/* Import variable fonts */
+@import '@fontsource-variable/outfit';
+@import '@fontsource-variable/jetbrains-mono';
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -27,4 +31,11 @@
   body {
     @apply bg-background text-foreground;
   }
+}
+
+/* Improve font rendering */
+body {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
 }

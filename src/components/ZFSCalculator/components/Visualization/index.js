@@ -1,38 +1,6 @@
 import React from 'react';
 import DeviceBox from './DeviceBox';
-
-const ColorKey = () => (
-  <div className="flex flex-wrap gap-4 mb-4 p-3 bg-white dark:bg-neutral-800 rounded-lg">
-    <div className="flex items-center gap-2">
-      <div className="w-4 h-4 rounded bg-emerald-900/50 border border-emerald-600" />
-      <span className="text-sm text-gray-600 dark:text-gray-400">Data</span>
-    </div>
-    <div className="flex items-center gap-2">
-      <div className="w-4 h-4 rounded bg-blue-900/50 border border-blue-600" />
-      <span className="text-sm text-gray-600 dark:text-gray-400">Mirror Copy</span>
-    </div>
-    <div className="flex items-center gap-2">
-      <div className="w-4 h-4 rounded bg-purple-900/50 border border-purple-400" />
-      <span className="text-sm text-gray-600 dark:text-gray-400">Parity</span>
-    </div>
-    <div className="flex items-center gap-2">
-      <div className="w-4 h-4 rounded bg-indigo-900/50 border border-indigo-400" />
-      <span className="text-sm text-gray-600 dark:text-gray-400">Distributed Parity</span>
-    </div>
-    <div className="flex items-center gap-2">
-      <div className="w-4 h-4 rounded bg-orange-900/50 border border-orange-700" />
-      <span className="text-sm text-gray-600 dark:text-gray-400">Hot Spare</span>
-    </div>
-    <div className="flex items-center gap-2">
-      <div className="w-4 h-4 rounded bg-yellow-900/50 border border-yellow-700" />
-      <span className="text-sm text-gray-600 dark:text-gray-400">SLOG</span>
-    </div>
-    <div className="flex items-center gap-2">
-      <div className="w-4 h-4 rounded bg-cyan-900/50 border border-cyan-700" />
-      <span className="text-sm text-gray-600 dark:text-gray-400">L2ARC</span>
-    </div>
-  </div>
-);
+import ColorKey from './ColorKey';
 
 const Visualization = ({ pool }) => {
   return (
@@ -156,8 +124,7 @@ const Visualization = ({ pool }) => {
       </div>
       
       <div className="mt-4 p-3 bg-white dark:bg-neutral-800 rounded-lg text-sm text-gray-600 dark:text-gray-400 transition-colors">
-        <strong className="text-gray-900 dark:text-gray-300">Note:</strong> Data is striped across VDEVs, with each VDEV maintaining its own redundancy. 
-        For example, with a mirror VDEV and a RAIDZ3 VDEV, you would need to lose all drives in the mirror VDEV OR 4 drives in the RAIDZ3 VDEV for data loss to occur.
+        <strong className="text-gray-900 dark:text-gray-300">Important:</strong> Data is striped across VDEVs, with each VDEV maintaining its own redundancy. If any single VDEV fails completely, the entire pool will be lost. For example, with a mirror VDEV and a RAIDZ3 VDEV, you would need to lose all drives in the mirror VDEV OR 4 drives in the RAIDZ3 VDEV to lose that VDEV, which would result in total pool failure.
       </div>
     </div>
   );

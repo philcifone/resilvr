@@ -5,6 +5,10 @@ module.exports = {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        sans: ['Outfit Variable', 'system-ui', '-apple-system', 'sans-serif'],
+        mono: ['JetBrains Mono Variable', 'monospace']
+      },
       colors: {
         border: "hsl(var(--border))",
         background: "hsl(var(--background))",
