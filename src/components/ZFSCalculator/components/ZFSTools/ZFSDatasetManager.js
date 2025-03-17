@@ -1,5 +1,6 @@
 import React, { useState, useCallback } from 'react';
 import { FolderTree, Copy, Check, Settings, Database, HardDrive, Info } from 'lucide-react';
+import CompressionSelector from './CompressionSelector';
 
 const ZFSDatasetManager = ({ poolName = 'tank' }) => {
   const [config, setConfig] = useState({
@@ -35,6 +36,13 @@ const ZFSDatasetManager = ({ poolName = 'tank' }) => {
     setConfig({
       ...config,
       customProperties: config.customProperties.filter((_, i) => i !== index)
+    });
+  };
+
+  const handleCompressionChange = (value) => {
+    setConfig({
+      ...config,
+      compression: value
     });
   };
 
@@ -83,7 +91,7 @@ const ZFSDatasetManager = ({ poolName = 'tank' }) => {
   };
 
   return (
-    <div className="bg-white dark:bg-neutral-800 rounded-lg shadow-sm p-6 transition-colors">
+    <div className="p-6">
       <div className="text-center mb-6">
         <h3 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-2">
           ZFS Dataset Manager
@@ -150,25 +158,9 @@ const ZFSDatasetManager = ({ poolName = 'tank' }) => {
           </div>
           
           <div className="grid md:grid-cols-2 gap-4">
-            {/* Compression */}
-            <div>
-              <label className="block text-sm font-medium text-gray-900 dark:text-gray-200 mb-2">
-                Compression
-              </label>
-              <select
-                value={config.compression}
-                onChange={(e) => setConfig({...config, compression: e.target.value})}
-                className="w-full p-2 bg-white dark:bg-neutral-700 border border-gray-300 
-                         dark:border-neutral-600 rounded text-gray-900 dark:text-gray-200"
-              >
-                <option value="off">off</option>
-                <option value="lz4">lz4 (recommended)</option>
-                <option value="gzip">gzip</option>
-                <option value="gzip-1">gzip-1 (fastest)</option>
-                <option value="gzip-9">gzip-9 (best compression)</option>
-                <option value="zstd">zstd</option>
-                <option value="zstd-fast">zstd-fast</option>
-              </select>
+            {/* Enhanced Compression */}
+            <div className="md:col-span-2">
+              <CompressionSelector value={config.compression} onChange={handleCompressionChange} />
             </div>
             
             {/* Record Size */}
@@ -192,6 +184,9 @@ const ZFSDatasetManager = ({ poolName = 'tank' }) => {
                 <option value="512K">512K</option>
                 <option value="1M">1M</option>
               </select>
+              <p className="mt-1 text-xs text-gray-500 dark:text-gray-400">
+                <strong>Recommendation:</strong> Use 1M for large sequential files, 8K-32K for databases
+              </p>
             </div>
             
             {/* Primary Cache */}
@@ -444,23 +439,31 @@ const ZFSDatasetManager = ({ poolName = 'tank' }) => {
           </div>
         </div>
 
-        {/* Usage Notes */}
+        {/* Compression Info Card */}
         <div className="mt-4 p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
           <h5 className="text-sm font-medium text-blue-900 dark:text-blue-100 mb-2">
-            Dataset Property Tips:
+            ZFS Compression Reference:
           </h5>
-          <div className="space-y-2 text-sm text-blue-800 dark:text-blue-200">
-            <div className="flex items-start gap-2">
-              <Info size={16} className="mt-0.5 flex-shrink-0" />
-              <p><strong>Compression:</strong> lz4 offers excellent performance/compression balance for most workloads</p>
-            </div>
-            <div className="flex items-start gap-2">
-              <Info size={16} className="mt-0.5 flex-shrink-0" />
-              <p><strong>Record Size:</strong> Use 1M for large sequential files (backups, media), 8K-32K for databases</p>
-            </div>
-            <div className="flex items-start gap-2">
-              <Info size={16} className="mt-0.5 flex-shrink-0" />
-              <p><strong>Atime:</strong> Setting to 'off' reduces I/O operations and improves performance</p>
+          <div className="space-y-3 text-sm text-blue-800 dark:text-blue-200">
+            <div className="grid md:grid-cols-2 gap-4">
+              <div>
+                <h6 className="font-medium mb-1">Algorithm Comparison</h6>
+                <ul className="list-disc list-inside space-y-1">
+                  <li><strong>lz4:</strong> Best balance of speed and compression for most workloads</li>
+                  <li><strong>zstd:</strong> Better compression than lz4 with good performance</li>
+                  <li><strong>gzip:</strong> Higher compression ratio but CPU intensive</li>
+                  <li><strong>zle:</strong> Only compresses zeros, very fast</li>
+                </ul>
+              </div>
+              <div>
+                <h6 className="font-medium mb-1">Use Cases</h6>
+                <ul className="list-disc list-inside space-y-1">
+                  <li><strong>Databases:</strong> lz4 or zstd-fast</li>
+                  <li><strong>VM Images:</strong> lz4 or zstd (level 1-3)</li>
+                  <li><strong>Media files:</strong> zstd (level 3-5)</li>
+                  <li><strong>Backups/Archives:</strong> zstd (level 7-19) or gzip-9</li>
+                </ul>
+              </div>
             </div>
           </div>
         </div>
