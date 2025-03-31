@@ -52,10 +52,6 @@ const ZFSCalculator = () => {
               </p>
             </div>
 
-            <div className="px-6 pt-4">
-              <DisclaimerBanner />
-            </div>
-
             {/* Tab Navigation */}
             <div className="flex border-b border-gray-200 dark:border-neutral-700 px-6 mt-4">
               {tabs.map(tab => (
