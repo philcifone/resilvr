@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { HardDrive, Database, Clock, Book } from 'lucide-react';
 import ZFSSnapshotManager from './ZFSSnapshotManager';
 import ZFSDatasetManager from './ZFSDatasetManager';
@@ -7,11 +7,11 @@ import ZFSCommandReference from './ZFSCommandReference';
 const ZFSToolsContainer = ({ poolName = 'tank' }) => {
   const [activeTab, setActiveTab] = useState('datasets');
 
-  const tabs = [
+  const tabs = useMemo(() => [
     { id: 'datasets', label: 'Datasets', icon: <Database size={16} /> },
     { id: 'snapshots', label: 'Snapshots', icon: <Clock size={16} /> },
     { id: 'commands', label: 'Command Reference', icon: <Book size={16} /> },
-  ];
+  ], []);
 
   return (
     <div className="bg-white dark:bg-neutral-800 rounded-lg shadow-sm overflow-hidden transition-colors">
@@ -46,13 +46,13 @@ const ZFSToolsContainer = ({ poolName = 'tank' }) => {
       {/* Tab Content */}
       <div>
         {activeTab === 'datasets' && (
-          <ZFSDatasetManager poolName={poolName} />
+          <ZFSDatasetManager key="dataset-manager" poolName={poolName} />
         )}
         {activeTab === 'snapshots' && (
-          <ZFSSnapshotManager poolName={poolName} />
+          <ZFSSnapshotManager key="snapshot-manager" poolName={poolName} />
         )}
         {activeTab === 'commands' && (
-          <ZFSCommandReference />
+          <ZFSCommandReference key="command-reference" />
         )}
       </div>
     </div>

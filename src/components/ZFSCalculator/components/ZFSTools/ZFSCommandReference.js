@@ -1,24 +1,18 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo, useCallback } from 'react';
 import { Terminal, Search, Book, Copy, Check, ChevronDown, ChevronUp } from 'lucide-react';
 
-const ZFSCommandReference = () => {
-  const [searchTerm, setSearchTerm] = useState('');
-  const [selectedCategory, setSelectedCategory] = useState('all');
-  const [expandedCommands, setExpandedCommands] = useState({});
-  const [copiedCommand, setCopiedCommand] = useState(null);
+// Command categories - moved outside component
+const categories = [
+  { id: 'all', name: 'All Commands' },
+  { id: 'pool', name: 'Pool Management' },
+  { id: 'dataset', name: 'Dataset Operations' },
+  { id: 'snapshot', name: 'Snapshots & Clones' },
+  { id: 'properties', name: 'Properties & Settings' },
+  { id: 'maintenance', name: 'Maintenance & Repair' },
+];
 
-  // Command categories
-  const categories = [
-    { id: 'all', name: 'All Commands' },
-    { id: 'pool', name: 'Pool Management' },
-    { id: 'dataset', name: 'Dataset Operations' },
-    { id: 'snapshot', name: 'Snapshots & Clones' },
-    { id: 'properties', name: 'Properties & Settings' },
-    { id: 'maintenance', name: 'Maintenance & Repair' },
-  ];
-
-  // ZFS Commands Database
-  const commands = [
+// ZFS Commands Database - moved outside component
+const commands = [
     {
       command: 'zpool status',
       syntax: 'zpool status [pool_name]',
@@ -254,29 +248,37 @@ const ZFSCommandReference = () => {
     }
   ];
 
-  // Filter commands based on search term and category
-  const filteredCommands = commands.filter(cmd => {
-    const matchesSearch = 
-      cmd.command.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      cmd.description.toLowerCase().includes(searchTerm.toLowerCase());
-    
-    const matchesCategory = selectedCategory === 'all' || cmd.category === selectedCategory;
-    
-    return matchesSearch && matchesCategory;
-  });
+const ZFSCommandReference = () => {
+  const [searchTerm, setSearchTerm] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState('all');
+  const [expandedCommands, setExpandedCommands] = useState({});
+  const [copiedCommand, setCopiedCommand] = useState(null);
 
-  const toggleCommand = (cmd) => {
+  // Filter commands based on search term and category - memoized
+  const filteredCommands = useMemo(() => {
+    return commands.filter(cmd => {
+      const matchesSearch = 
+        cmd.command.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        cmd.description.toLowerCase().includes(searchTerm.toLowerCase());
+      
+      const matchesCategory = selectedCategory === 'all' || cmd.category === selectedCategory;
+      
+      return matchesSearch && matchesCategory;
+    });
+  }, [searchTerm, selectedCategory]);
+
+  const toggleCommand = useCallback((cmd) => {
     setExpandedCommands(prev => ({
       ...prev,
       [cmd]: !prev[cmd]
     }));
-  };
+  }, []);
 
-  const handleCopy = (command) => {
+  const handleCopy = useCallback((command) => {
     navigator.clipboard.writeText(command);
     setCopiedCommand(command);
     setTimeout(() => setCopiedCommand(null), 2000);
-  };
+  }, []);
 
   return (
     <div className="bg-white dark:bg-neutral-800 rounded-lg shadow-sm p-6 transition-colors">

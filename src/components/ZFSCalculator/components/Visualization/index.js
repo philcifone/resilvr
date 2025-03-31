@@ -9,21 +9,19 @@ const Visualization = ({ pool }) => {
       
       <ColorKey />
       
-      <div className="overflow-x-auto">
-        <div className="min-w-[600px]">
-          {/* Pool name */}
-          <div className="text-center mb-4 text-lg font-medium text-gray-900 dark:text-gray-200">
-            Pool: {pool.name}
-          </div>
-          
-          {/* Pool container */}
-          <div className="flex flex-col gap-4">
-            {/* VDEVs */}
-            <div className="flex flex-wrap gap-4">
+      {/* Pool name */}
+      <div className="text-center mb-4 text-lg font-medium text-gray-900 dark:text-gray-200">
+        Pool: {pool.name}
+      </div>
+      
+      {/* Pool container */}
+      <div className="flex flex-col gap-4">
+        {/* VDEVs */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
               {pool.vdevs.map((vdev, vdevIndex) => (
                 <div 
                   key={vdevIndex}
-                  className="flex-1 min-w-[200px] bg-white dark:bg-neutral-800 p-4 rounded-lg 
+                  className="bg-white dark:bg-neutral-800 p-4 rounded-lg 
                            border border-gray-200 dark:border-neutral-600 transition-colors"
                 >
                   <div className="text-sm text-gray-600 dark:text-gray-400 mb-2">
@@ -120,8 +118,6 @@ const Visualization = ({ pool }) => {
               </div>
             )}
           </div>
-        </div>
-      </div>
       
       <div className="mt-4 p-3 bg-white dark:bg-neutral-800 rounded-lg text-sm text-gray-600 dark:text-gray-400 transition-colors">
         <strong className="text-gray-900 dark:text-gray-300">Important: </strong>  Data is striped across VDEVs. If any single VDEV fails completely, the entire pool will be lost.

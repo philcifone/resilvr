@@ -1,5 +1,5 @@
-import React, { useState, useCallback } from 'react';
-import { FolderTree, Copy, Check, Settings, Database, HardDrive, Info } from 'lucide-react';
+import React, { useState, useCallback, useMemo } from 'react';
+import { FolderTree, Copy, Check, Settings, Database, HardDrive } from 'lucide-react';
 import CompressionSelector from './CompressionSelector';
 
 const ZFSDatasetManager = ({ poolName = 'tank' }) => {
@@ -22,31 +22,31 @@ const ZFSDatasetManager = ({ poolName = 'tank' }) => {
   const [customProperty, setCustomProperty] = useState({ name: '', value: '' });
   const [copied, setCopied] = useState(false);
 
-  const addCustomProperty = () => {
+  const addCustomProperty = useCallback(() => {
     if (customProperty.name && customProperty.value) {
-      setConfig({
-        ...config,
-        customProperties: [...config.customProperties, { ...customProperty }]
-      });
+      setConfig(prevConfig => ({
+        ...prevConfig,
+        customProperties: [...prevConfig.customProperties, { ...customProperty }]
+      }));
       setCustomProperty({ name: '', value: '' });
     }
-  };
+  }, [customProperty]);
 
-  const removeCustomProperty = (index) => {
-    setConfig({
-      ...config,
-      customProperties: config.customProperties.filter((_, i) => i !== index)
-    });
-  };
+  const removeCustomProperty = useCallback((index) => {
+    setConfig(prevConfig => ({
+      ...prevConfig,
+      customProperties: prevConfig.customProperties.filter((_, i) => i !== index)
+    }));
+  }, []);
 
-  const handleCompressionChange = (value) => {
-    setConfig({
-      ...config,
+  const handleCompressionChange = useCallback((value) => {
+    setConfig(prevConfig => ({
+      ...prevConfig,
       compression: value
-    });
-  };
+    }));
+  }, []);
 
-  const getCreateCommand = useCallback(() => {
+  const getCreateCommand = useMemo(() => {
     if (!config.name) return '# Please specify a dataset name';
     
     const fullPath = `${poolName}/${config.name}`;
@@ -77,18 +77,32 @@ const ZFSDatasetManager = ({ poolName = 'tank' }) => {
     });
     
     return `zfs create ${properties.join(' ')} ${fullPath}`;
-  }, [config, poolName]);
+  }, [
+    config.name,
+    config.mountpoint,
+    config.compression,
+    config.recordsize,
+    config.primaryCache,
+    config.secondaryCache,
+    config.atime,
+    config.exec,
+    config.quota,
+    config.quotaUnit,
+    config.reservation,
+    config.reservationUnit,
+    config.customProperties,
+    poolName
+  ]);
 
-  const handleCopy = async () => {
+  const handleCopy = useCallback(async () => {
     try {
-      const command = getCreateCommand();
-      await navigator.clipboard.writeText(command);
+      await navigator.clipboard.writeText(getCreateCommand);
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
     } catch (err) {
       console.error('Failed to copy text:', err);
     }
-  };
+  }, [getCreateCommand]);
 
   return (
     <div className="p-6">
@@ -434,7 +448,7 @@ const ZFSDatasetManager = ({ poolName = 'tank' }) => {
           </div>
           <div className="relative bg-gray-50 dark:bg-neutral-900 rounded-lg p-4">
             <pre className="text-sm text-gray-600 dark:text-gray-400 overflow-x-auto whitespace-pre-wrap break-all">
-              {getCreateCommand()}
+              {getCreateCommand}
             </pre>
           </div>
         </div>

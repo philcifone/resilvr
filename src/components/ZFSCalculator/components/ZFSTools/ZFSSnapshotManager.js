@@ -1,5 +1,5 @@
-import React, { useState, useCallback } from 'react';
-import { Calendar, Clock, Copy, Check, Info, X, AlertTriangle } from 'lucide-react';
+import React, { useState, useCallback, useMemo } from 'react';
+import { Clock, Copy, Check, Info } from 'lucide-react';
 
 const ZFSSnapshotManager = ({ poolName = 'tank' }) => {
   const [config, setConfig] = useState({
@@ -14,7 +14,7 @@ const ZFSSnapshotManager = ({ poolName = 'tank' }) => {
   });
   const [copied, setCopied] = useState(false);
 
-  const getSnapshotCommand = useCallback(() => {
+  const getSnapshotCommand = useMemo(() => {
     const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
     const snapshotName = config.customName || timestamp;
     const recursiveFlag = config.recursive ? '-r' : '';
@@ -23,9 +23,14 @@ const ZFSSnapshotManager = ({ poolName = 'tank' }) => {
       : poolName;
     
     return `zfs snapshot ${recursiveFlag} ${fullDatasetPath}@${snapshotName}`;
-  }, [config, poolName]);
+  }, [
+    config.customName,
+    config.recursive,
+    config.datasetPath,
+    poolName
+  ]);
 
-  const getScheduleCommand = useCallback(() => {
+  const getScheduleCommand = useMemo(() => {
     if (!config.schedule.enabled) return '';
     
     const fullDatasetPath = config.datasetPath 
@@ -33,9 +38,15 @@ const ZFSSnapshotManager = ({ poolName = 'tank' }) => {
       : poolName;
       
     return `zfs-auto-snapshot --keep=${config.schedule.retain} --interval=${config.schedule.interval} ${fullDatasetPath}`;
-  }, [config, poolName]);
+  }, [
+    config.schedule.enabled,
+    config.schedule.retain,
+    config.schedule.interval,
+    config.datasetPath,
+    poolName
+  ]);
 
-  const getCommandExplanation = () => {
+  const getCommandExplanation = useMemo(() => {
     const parts = [];
     const fullDatasetPath = config.datasetPath 
       ? `${poolName}/${config.datasetPath}` 
@@ -75,11 +86,19 @@ const ZFSSnapshotManager = ({ poolName = 'tank' }) => {
     }
 
     return parts;
-  };
+  }, [
+    config.datasetPath,
+    config.recursive,
+    config.customName,
+    config.schedule.enabled,
+    config.schedule.retain,
+    config.schedule.interval,
+    poolName
+  ]);
 
-  const handleCopy = async () => {
+  const handleCopy = useCallback(async () => {
     try {
-      const commands = [getSnapshotCommand(), getScheduleCommand()]
+      const commands = [getSnapshotCommand, getScheduleCommand]
         .filter(Boolean)
         .join('\n');
       await navigator.clipboard.writeText(commands);
@@ -88,7 +107,7 @@ const ZFSSnapshotManager = ({ poolName = 'tank' }) => {
     } catch (err) {
       console.error('Failed to copy text:', err);
     }
-  };
+  }, [getSnapshotCommand, getScheduleCommand]);
 
   return (
     <div className="bg-white dark:bg-neutral-800 rounded-lg shadow-sm p-6 transition-colors">
@@ -263,7 +282,7 @@ const ZFSSnapshotManager = ({ poolName = 'tank' }) => {
           </div>
           <div className="relative bg-gray-50 dark:bg-neutral-900 rounded-lg p-4">
             <pre className="text-sm text-gray-600 dark:text-gray-400 overflow-x-auto whitespace-pre">
-              {[getSnapshotCommand(), getScheduleCommand()].filter(Boolean).join('\n')}
+              {[getSnapshotCommand, getScheduleCommand].filter(Boolean).join('\n')}
             </pre>
           </div>
 
@@ -272,7 +291,7 @@ const ZFSSnapshotManager = ({ poolName = 'tank' }) => {
             <h5 className="text-sm font-medium text-gray-900 dark:text-gray-300">
               Command Explanation:
             </h5>
-            {getCommandExplanation().map((part, index) => (
+            {getCommandExplanation.map((part, index) => (
               <div key={index} className="bg-gray-50 dark:bg-neutral-900 p-3 rounded-lg">
                 <code className="text-sm text-blue-600 dark:text-blue-400 font-mono">
                   {part.command}

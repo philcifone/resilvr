@@ -1,5 +1,5 @@
 import React, { useState, useCallback } from 'react';
-import { HardDrive, Calculator, Shield, Info, Copy, Check } from 'lucide-react';
+import { AlertTriangle, HardDrive, Calculator, Shield, Info, Copy, Check } from 'lucide-react';
 import Warnings from './Warnings';
 
 const Results = ({ pool, results }) => {
@@ -133,6 +133,17 @@ const Results = ({ pool, results }) => {
             <pre className="text-sm text-gray-600 dark:text-gray-400 whitespace-pre-wrap break-all">
               {getZfsCommands()}
             </pre>
+          </div>
+          
+          {/* Unified Warning Message */}
+          <div className="mt-4 p-3 bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-700 rounded-lg">
+            <div className="flex items-start gap-3">
+              <AlertTriangle className="w-5 h-5 text-yellow-600 dark:text-yellow-500 mt-0.5 flex-shrink-0" />
+              <div className="text-sm text-yellow-800 dark:text-yellow-200">
+                <strong>Educational Tool Warning:</strong> This calculator is for learning purposes only. Always verify commands before executing in production. 
+                Double-check device paths before copying and pasting commands. Devices shown as /dev/sdX must be replaced with actual device paths.
+              </div>
+            </div>
           </div>
         </div>
       </div>
